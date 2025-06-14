@@ -1,6 +1,46 @@
-export default function Intro() {
+"use client";
+import { useEffect, useRef } from 'react';
+
+const ParallaxComponent = () => {
+  const parallaxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      if (parallaxRef.current) {
+        const spans = parallaxRef.current.querySelectorAll('span[data-value]');
+        
+        spans.forEach((span) => {
+          const position = parseFloat(span.getAttribute('data-value') || '0');
+          const x = (window.innerWidth - event.pageX * position) / 90;
+          const y = (window.innerHeight - event.pageY * position) / 90;
+          console.log(`Transforming span with data-value ${position}: translateX(${x}px) translateY(${y}px)`);
+          (span as HTMLElement).style.transform = `translateX(${x}px) translateY(${y}px)`;
+        });
+      }
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+
+    // Cleanup function to remove listener when component unmounts
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   return (
-    <section className="py-16 md:py-24">
+    <div ref={parallaxRef} className="parallax-wrap py-16 md:py-24">
+      <span data-value="1" />
+      <span data-value="2" />
+      <span data-value="3" />
+      <span data-value="4" />
+      <span data-value="5" />
+      <Intro />
+    </div>
+  );
+};
+
+const Intro = () => {
+  return (
       <div className="max-w-3xl mx-auto text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-6 text-indigo-600">
           Welcome to My Squishy Art Gallery
@@ -25,6 +65,7 @@ export default function Intro() {
           View Gallery
         </a>
       </div>
-    </section>
   );
 }
+
+export default ParallaxComponent;

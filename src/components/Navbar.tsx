@@ -5,7 +5,7 @@ export default function Navbar() {
     <nav className="bg-white shadow-md py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold text-indigo-600">
-          Squishy Art
+          Art by Akrona
         </Link>
         <div className="space-x-6">
           <Link href="/" className="hover:text-indigo-600 transition-colors">
